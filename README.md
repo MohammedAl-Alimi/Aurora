@@ -15,6 +15,10 @@
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="License" />
 </p>
 
+<p align="center">
+  <a href="https://aurora-ptqjmpefk-mohammed-al-alimis-projects.vercel.app"><b>🌐 Try the live web demo →</b></a>
+</p>
+
 ---
 
 **Aurora** turns a PDF (or pasted text) into a study deck you can review with spaced repetition. Built with Flutter using a clean, layered architecture (Bloc + repository pattern). It runs on **iOS, Android, and the web**.
