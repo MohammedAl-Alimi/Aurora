@@ -62,8 +62,8 @@ lib/src/
 
 ```bash
 # 1. Clone
-git clone https://github.com/MohammedAl-Alimi/Auroura.git
-cd Auroura
+git clone https://github.com/MohammedAl-Alimi/Aurora.git
+cd Aurora
 
 # 2. Install dependencies
 flutter pub get
