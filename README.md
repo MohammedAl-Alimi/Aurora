@@ -1,75 +1,102 @@
-# **Aurora**  
-Aurora is a smart flashcard app that uses AI to generate flashcards from documents, helping you study efficiently.
+# Aurora
 
-## 📌 Features  
-- Create, edit, and organize flashcard decks.  
-- Generate flashcards automatically from PDFs or pasted text.  
-- Review cards using the SM-2 spaced repetition algorithm.  
-- Practice with multiple-choice and manual input modes.  
-- Light and dark themes for better readability.  
+**Aurora is a smart flashcard app that uses AI to generate flashcards from your documents — so you can spend less time making cards and more time learning.**
 
-## 📸 Screenshots  
-_(Add screenshots here)_  
+Upload a PDF (or paste text), and Aurora turns it into a study deck you can
+review with spaced repetition. Built with Flutter using a clean, layered
+architecture (Bloc + repository pattern).
 
-## 📦 Packages & Technologies  
+![Flutter](https://img.shields.io/badge/Flutter-Dart-02569B?logo=flutter)
+![Architecture](https://img.shields.io/badge/architecture-Bloc%20%2B%20Clean-4CAF50)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-| Description             | Package              |  
-|-------------------------|----------------------|  
-| Architecture           | Bloc Pattern         |  
-| State Management       | flutter_bloc         |  
-| Dependency Injection   | get_it               |  
-| Theming               | flex_color_scheme    |  
-| OCR (Text Recognition) | google_ml_vision     |  
-| Database              | Isar                 |  
+---
 
-## 🩻 Project Structure  
+## ✨ Features
+
+- **AI flashcard generation** — create decks automatically from PDFs or pasted text
+- **Spaced repetition** — review with the proven **SM-2** algorithm
+- **Practice modes** — multiple-choice quizzes and manual (writing) recall
+- **Deck management** — create, edit, and organize flashcard collections
+- **Offline-first** — cards stored locally with the Isar database
+- **Light & dark themes** for comfortable studying
+
+## 🧱 Tech & architecture
+
+| Concern | Choice |
+|---|---|
+| Architecture | Clean architecture (data / domain / presentation) |
+| State management | `flutter_bloc` (Bloc pattern) |
+| Dependency injection | `get_it` |
+| Local database | `isar` |
+| Theming | `flex_color_scheme` |
+| Networking | `dio` |
+| PDF / OCR | `read_pdf_text`, `google_ml_vision` |
+| AI backend | [ChatPDF API](https://www.chatpdf.com/docs/api/backend) |
+
 ```
-lib  
-│  
-│_ 📁src  
-   │  
-   │__ 📁core  
-   │   │__ 📁errors <- Define errors and exceptions  
-   │   │__ 📁router <- Generated router & route names  
-   │   │__ 📁services <- Dependency injection & internet connection  
-   │   │__ 📁theme <- Define themes & dynamic theming  
-   │   │__ 📁utils <- Constants (enums, strings, etc.)  
-   │   │__ 📁widgets <- Shared widgets used in multiple screens  
-   │  
-   │__ 📁features  
-      │  
-      │__ 📁cards  
-         │__ 📁controller <- Bloc for state management  
-         │__ 📁data <- Data retrieval and caching  
-         │   │__ 📁models <- Business logic models  
-         │   │__ 📁data_source <- Works with database and API  
-         │   │__ 📁repository <- Combines and maps data  
-         │__ 📁presentation <- Screens and widgets  
+lib/src/
+├── core/                  # shared building blocks
+│   ├── errors/            # failures & exceptions
+│   ├── router/            # route generation
+│   ├── services/          # DI + connectivity
+│   ├── theme/             # dynamic theming
+│   ├── utils/             # constants, enums, strings
+│   └── widgets/           # shared widgets
+└── features/cards/
+    ├── controller/        # Bloc (state management)
+    ├── data/              # models, data sources, repositories
+    └── presentation/      # screens & widgets
 ```
 
-## 🏃‍♂️ Install & Run The App  
-1. Clone the project:  
-   ```
-   git clone https://github.com/your-repo/aurora.git
-   ```  
-2. Navigate to the project directory and run:  
-   ```
-   flutter pub get
-   ```  
-3. (If using an API) Create a `.env` file and add necessary API keys.  
-4. Run the app:  
-   ```
-   flutter run
-   ```
+## 🚀 Getting started
 
-## 💡 Contribution  
-Feel free to contribute by adding features, reporting bugs, or making a pull request.
+**Prerequisites:** [Flutter](https://docs.flutter.dev/get-started/install) (Dart SDK ≥ 3.0.3).
 
-## 🗺️ Roadmap  
-✅ Implement spaced repetition (SM-2).  
-⏳ Improve AI flashcard generation.  
-✅ Add multiple-choice practice mode.  
-⏳ Enhance UI/UX with animations.  
+```bash
+# 1. Clone
+git clone https://github.com/MohammedAl-Alimi/Auroura.git
+cd Auroura
 
-## 🗞️ License  
-MIT License (Ensure to remove author credits and API keys if applicable).  
+# 2. Install dependencies
+flutter pub get
+```
+
+**3. Add your API keys.** Aurora uses the [ChatPDF API](https://www.chatpdf.com/docs/api/backend)
+to generate flashcards. Copy the example env file and fill in your keys:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env`:
+
+```
+chatPdfApi=your_chatpdf_api_key
+RAPID_API_KEY=your_rapidapi_key
+```
+
+> The `.env` file is gitignored and bundled as a Flutter asset at build time —
+> never commit real keys.
+
+**4. Run**
+
+```bash
+flutter run
+```
+
+## 🗺️ Roadmap
+
+- ✅ Spaced repetition (SM-2)
+- ✅ Multiple-choice practice mode
+- ⏳ Improved AI flashcard generation
+- ⏳ UI/UX polish and animations
+
+## 🤝 Contributing
+
+Contributions are welcome — feel free to open an issue or a pull request for
+features, fixes, or ideas.
+
+## 📄 License
+
+Released under the [MIT License](LICENSE) © 2025 Mohammed Al-Alimi.
