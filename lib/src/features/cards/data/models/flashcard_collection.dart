@@ -1,30 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:isar/isar.dart';
 import 'package:uuid/uuid.dart';
 
-part 'flashcard_collection.g.dart';
-
-@collection
 class FlashcardCollection {
   String name;
   String description;
   List<Flashcard> cards;
-  Id id = Isar.autoIncrement;
-  @Index(unique: true, replace: true, type: IndexType.hash)
+  @Deprecated('Legacy Isar id — no longer used; kept for copyWith compat.')
+  final int? id;
   final String uuid;
   FlashcardCollection({
     required this.name,
     required this.uuid,
     this.description = '',
     this.cards = const [],
+    this.id,
   });
 
   FlashcardCollection copyWith({
     String? name,
     String? description,
     List<Flashcard>? cards,
-    Id? id,
+    int? id,
     String? uuid,
   }) {
     return FlashcardCollection(
@@ -34,9 +31,26 @@ class FlashcardCollection {
       uuid: uuid ?? this.uuid,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'description': description,
+        'uuid': uuid,
+        'cards': cards.map((c) => c.toJson()).toList(),
+      };
+
+  factory FlashcardCollection.fromJson(Map<String, dynamic> json) {
+    return FlashcardCollection(
+      name: (json['name'] ?? '') as String,
+      description: (json['description'] ?? '') as String,
+      uuid: (json['uuid'] ?? '') as String,
+      cards: ((json['cards'] ?? const []) as List)
+          .map((e) => Flashcard.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList(),
+    );
+  }
 }
 
-@embedded
 class Flashcard {
   String question;
   String answer;
@@ -80,5 +94,27 @@ class Flashcard {
         question: map['term'],
         answer: map['definition'],
         uuid: const Uuid().v4());
+  }
+
+  Map<String, dynamic> toJson() => {
+        'question': question,
+        'answer': answer,
+        'dueTime': dueTime,
+        'interval': interval,
+        'factor': factor,
+        'repetitions': repetitions,
+        'uuid': uuid,
+      };
+
+  factory Flashcard.fromJson(Map<String, dynamic> json) {
+    return Flashcard(
+      question: (json['question'] ?? '') as String,
+      answer: (json['answer'] ?? '') as String,
+      dueTime: (json['dueTime'] ?? 0) as int,
+      interval: ((json['interval'] ?? 1.0) as num).toDouble(),
+      factor: ((json['factor'] ?? 2.5) as num).toDouble(),
+      repetitions: (json['repetitions'] ?? 0) as int,
+      uuid: (json['uuid'] ?? '') as String,
+    );
   }
 }

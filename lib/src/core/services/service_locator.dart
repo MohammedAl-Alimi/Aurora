@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:quizwiz/src/core/core.dart';
 import 'package:quizwiz/src/features/cards/controller/controller.dart';
 import 'package:quizwiz/src/features/cards/data/data.dart';
@@ -11,7 +12,8 @@ class ServiceLocator {
     sl.registerLazySingleton(() => CollectionLocalDataSource());
     sl.registerLazySingleton(() => FlashcardLocalDataSource());
     sl.registerLazySingleton(() => BaseRemoteDataSource());
-    sl.registerLazySingleton<Isar>(() => Isar.getInstance()!);
+    sl.registerLazySingleton<Box<String>>(
+        () => Hive.box<String>(collectionsBoxName));
     //repository
     sl.registerLazySingleton(() => BaseCardsRepository(sl(), sl(), sl()));
     //bloc

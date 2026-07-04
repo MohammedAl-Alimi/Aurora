@@ -1,10 +1,13 @@
+import 'dart:convert';
+
+import 'package:hive_ce/hive.dart';
 import 'package:quizwiz/src/core/core.dart';
 import 'package:dartz/dartz.dart';
 import 'package:quizwiz/src/features/cards/data/data.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class FlashcardLocalDataSource {
-  factory FlashcardLocalDataSource() => IsarFlashcardDataSource();
+  factory FlashcardLocalDataSource() => HiveFlashcardDataSource();
   Future<Unit> addFlashcard(
       String question, String answer, String collectionUuid);
 
@@ -25,29 +28,34 @@ abstract class FlashcardLocalDataSource {
       String collectionUuid, List<Flashcard> flashcards);
 }
 
-class IsarFlashcardDataSource implements FlashcardLocalDataSource {
-  final _instance = Isar.getInstance()!;
+class HiveFlashcardDataSource implements FlashcardLocalDataSource {
+  final Box<String> _box = Hive.box<String>(collectionsBoxName);
   final uuid = const Uuid();
+
+  FlashcardCollection? _getByUuid(String collectionUuid) {
+    final raw = _box.get(collectionUuid);
+    if (raw == null) return null;
+    return FlashcardCollection.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+  }
+
+  Future<void> _save(FlashcardCollection collection) =>
+      _box.put(collection.uuid, jsonEncode(collection.toJson()));
 
   @override
   Future<Unit> addFlashcard(
       String question, String answer, String collectionUuid) async {
-    final flashcard = Flashcard(
-        question: question,
-        answer: answer,
-        uuid: uuid.v4(),
-        dueTime: DateTime.now().millisecondsSinceEpoch);
-    await _instance.writeTxn(() async {
-      final collection =
-          await _instance.flashcardCollections.getByUuid(collectionUuid);
-      List<Flashcard> cards = [
-        ...collection!.cards,
-      ];
-      cards.add(flashcard);
-      await _instance.flashcardCollections
-          .put(collection.copyWith(cards: cards));
-    }).onError((error, stackTrace) =>
-        throw LocalStorageException(message: error.toString()));
+    try {
+      final flashcard = Flashcard(
+          question: question,
+          answer: answer,
+          uuid: uuid.v4(),
+          dueTime: DateTime.now().millisecondsSinceEpoch);
+      final collection = _getByUuid(collectionUuid);
+      final cards = <Flashcard>[...collection!.cards, flashcard];
+      await _save(collection.copyWith(cards: cards));
+    } catch (error) {
+      throw LocalStorageException(message: error.toString());
+    }
     return unit;
   }
 
@@ -65,66 +73,57 @@ class IsarFlashcardDataSource implements FlashcardLocalDataSource {
   @override
   Future<Unit> updateDueTime(
       Flashcard card, String collectionUuid, ReviewResult reviewResult) async {
-    //make a new card with updated [dueReview, factor, interval]
-    final newCard = CardCalculation(card).update(reviewResult);
-
-    await _instance.writeTxn(() async {
-      //get the old collection
-      final collection =
-          await _instance.flashcardCollections.getByUuid(collectionUuid);
-
-      // make a new cards list where the old card is excluded and the new card is added
-      List<Flashcard> newCardList = [];
-      newCardList.addAll(collection!.cards
-          .where((element) => element.uuid != card.uuid)
-          .toList());
-      newCardList.add(newCard);
-
-      //update the collection with the new cards list
-      await _instance.flashcardCollections
-          .put(collection.copyWith(cards: newCardList));
-    });
+    try {
+      final newCard = CardCalculation(card).update(reviewResult);
+      final collection = _getByUuid(collectionUuid);
+      final newCardList = <Flashcard>[
+        ...collection!.cards.where((element) => element.uuid != card.uuid),
+        newCard,
+      ];
+      await _save(collection.copyWith(cards: newCardList));
+    } catch (error) {
+      throw LocalStorageException(message: error.toString());
+    }
     return unit;
   }
 
   @override
   Future<Unit> removeFlashcard(
       FlashcardCollection collection, String flashcardUuid) async {
-    await _instance.writeTxn(() async {
-      await _instance.flashcardCollections.put(collection.copyWith(
+    try {
+      await _save(collection.copyWith(
           cards: collection.cards
               .where((element) => element.uuid != flashcardUuid)
               .toList()));
-    });
+    } catch (error) {
+      throw LocalStorageException(message: error.toString());
+    }
     return unit;
   }
 
   @override
   Future<Unit> editFlashcard(EditFlashcardParameters parameters) async {
-    await _instance.writeTxn(() async {
+    try {
       final findCard = parameters.collection.cards
           .where((element) => element.uuid == parameters.flashcard.uuid);
-      //create the updated card
       final newCard = findCard.single
           .copyWith(question: parameters.question, answer: parameters.answer);
-      //create a new card list without the old card
-      List<Flashcard> newList = parameters.collection.cards
-          .where((element) => element.uuid != parameters.flashcard.uuid)
-          .toList();
-      //add the updated card to list
-      newList.add(newCard);
-
-      //update the collection
-      await _instance.flashcardCollections
-          .put(parameters.collection.copyWith(cards: newList));
-    });
+      final newList = <Flashcard>[
+        ...parameters.collection.cards
+            .where((element) => element.uuid != parameters.flashcard.uuid),
+        newCard,
+      ];
+      await _save(parameters.collection.copyWith(cards: newList));
+    } catch (error) {
+      throw LocalStorageException(message: error.toString());
+    }
     return unit;
   }
 
   @override
   Future<List<MultipleChoiceQuiz>> getMultipleChoiceOptions(
       FlashcardCollection collection) async {
-    List<MultipleChoiceQuiz> result = [];
+    final result = <MultipleChoiceQuiz>[];
     for (var element in collection.cards) {
       result.add(MultipleChoiceQuiz.fromCollection(
           card: element, collection: collection));
@@ -135,15 +134,13 @@ class IsarFlashcardDataSource implements FlashcardLocalDataSource {
   @override
   Future<Unit> saveAllGeneratedFlashcard(
       String collectionUuid, List<Flashcard> flashcards) async {
-    _instance.writeTxn(() async {
-      final collection =
-          await _instance.flashcardCollections.getByUuid(collectionUuid);
-      List<Flashcard> newCardsList = [...collection!.cards];
-      newCardsList.addAll(flashcards);
-      await _instance.flashcardCollections
-          .put(collection.copyWith(cards: newCardsList));
-    }).onError((error, stackTrace) =>
-        throw LocalStorageException(message: error.toString()));
+    try {
+      final collection = _getByUuid(collectionUuid);
+      final newCardsList = <Flashcard>[...collection!.cards, ...flashcards];
+      await _save(collection.copyWith(cards: newCardsList));
+    } catch (error) {
+      throw LocalStorageException(message: error.toString());
+    }
     return unit;
   }
 }

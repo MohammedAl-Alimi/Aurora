@@ -17,7 +17,13 @@
 
 ---
 
-**Aurora** turns a PDF (or pasted text) into a study deck you can review with spaced repetition. Built with Flutter using a clean, layered architecture (Bloc + repository pattern).
+**Aurora** turns a PDF (or pasted text) into a study deck you can review with spaced repetition. Built with Flutter using a clean, layered architecture (Bloc + repository pattern). It runs on **iOS, Android, and the web**.
+
+## 📸 Screenshots
+
+| Your decks | Study (SM-2) | Reveal & rate | Light theme |
+|:---:|:---:|:---:|:---:|
+| <img src="assets/screenshots/decks.png" width="190" alt="Deck list" /> | <img src="assets/screenshots/review.png" width="190" alt="Review a card" /> | <img src="assets/screenshots/review-answer.png" width="190" alt="Reveal answer and rate" /> | <img src="assets/screenshots/light-theme.png" width="190" alt="Light theme" /> |
 
 ## ✨ Features
 
@@ -89,8 +95,12 @@ RAPID_API_KEY=your_rapidapi_key
 **4. Run**
 
 ```bash
-flutter run
+flutter run              # mobile (iOS / Android)
+flutter run -d chrome    # in the browser
 ```
+
+> The web build stores decks in the browser (IndexedDB via Hive) and seeds a
+> few sample decks on first load, so you can try it instantly without a backend.
 
 ## 🗺️ Roadmap
 

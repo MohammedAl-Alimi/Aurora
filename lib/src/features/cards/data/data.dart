@@ -5,7 +5,6 @@ export 'package:quizwiz/src/features/cards/data/data_source/local_data_source/co
 export 'package:quizwiz/src/features/cards/data/data_source/local_data_source/flashcard_local_data_source.dart';
 export 'package:quizwiz/src/features/cards/data/models/flashcard_collection.dart';
 export 'package:quizwiz/src/features/cards/data/repository/cards_repository.dart';
-export 'package:isar/isar.dart';
 export 'package:quizwiz/src/features/cards/data/models/edit_flashcard_parameters.dart';
 export 'package:quizwiz/src/features/cards/data/models/card_calculation.dart';
 export 'package:quizwiz/src/features/cards/data/data_source/remote_data_source/api_client.dart';

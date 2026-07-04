@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:quizwiz/src/core/core.dart';
 import 'package:quizwiz/src/features/cards/controller/bloc/cards_events.dart';
 import 'package:quizwiz/src/features/cards/data/data.dart';
@@ -7,9 +8,9 @@ part 'cards_state.dart';
 
 class CardsBloc extends Bloc<CardsEvents, CardsState> {
   final BaseCardsRepository _baseCardsRepository;
-  final Isar _isar;
+  final Box<String> _box;
 
-  CardsBloc(this._isar, this._baseCardsRepository) : super(const CardsState()) {
+  CardsBloc(this._box, this._baseCardsRepository) : super(const CardsState()) {
     on<GetCollectionsEvent>(_getCollections);
     on<RemoveCollectionEvent>(_removeCollection);
     on<CreateCollectionsEvent>(_createCollections);
@@ -23,13 +24,13 @@ class CardsBloc extends Bloc<CardsEvents, CardsState> {
     on<GenerateFlashcardsEvent>(_generateFlashcards);
     on<SaveAllGenerateFlashcardsEvent>(_saveAllGenerateFlashcards);
     on<CombineCollectionsEvent>(_combineCollections);
-    _isar.flashcardCollections.watchLazy().listen((event) {
+    _box.watch().listen((event) {
       add(const GetCollectionsEvent());
     });
   }
   @override
   Future<void> close() async {
-    await _isar.close();
+    await _box.close();
     return super.close();
   }
 
