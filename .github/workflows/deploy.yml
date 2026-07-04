@@ -1,0 +1,50 @@
+name: Deploy web to Vercel
+
+# Builds the Flutter web app and deploys it to the existing Vercel project on
+# every push to main. Vercel can't build Flutter itself, so we build here and
+# ship the static output.
+#
+# One-time setup: add a repository secret named VERCEL_TOKEN
+#   (GitHub → Settings → Secrets and variables → Actions → New repository secret)
+#   Create the token at https://vercel.com/account/tokens
+# Until the secret exists, the build still runs and the deploy step is skipped.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: team_tMqGgpsgrbDLCEnKBgFC19l5
+      VERCEL_PROJECT_ID: prj_uXX2Pl3cuHOATSBogYmbm3AtwPgX
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # The app declares `.env` as a bundled asset; provide an empty one for
+      # the build (real keys are never needed for the web build).
+      - name: Create placeholder .env
+        run: printf 'chatPdfApi=\nRAPID_API_KEY=\n' > .env
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build web
+        run: flutter build web --release
+
+      - name: Add SPA rewrite
+        run: echo '{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }' > build/web/vercel.json
+
+      - name: Deploy to Vercel (production)
+        if: env.VERCEL_TOKEN != ''
+        run: |
+          npm install -g vercel@latest
+          vercel deploy build/web --prod --yes --token "$VERCEL_TOKEN"
