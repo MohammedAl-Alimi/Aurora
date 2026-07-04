@@ -1,16 +1,23 @@
-# Aurora
+<p align="center">
+  <img src="assets/icon.jpeg" alt="Aurora" width="112" />
+</p>
 
-**Aurora is a smart flashcard app that uses AI to generate flashcards from your documents — so you can spend less time making cards and more time learning.**
+<h1 align="center">Aurora</h1>
 
-Upload a PDF (or paste text), and Aurora turns it into a study deck you can
-review with spaced repetition. Built with Flutter using a clean, layered
-architecture (Bloc + repository pattern).
+<p align="center">
+  <b>A smart flashcard app that uses AI to generate flashcards from your documents —<br/>
+  so you can spend less time making cards and more time learning.</b>
+</p>
 
-![Flutter](https://img.shields.io/badge/Flutter-Dart-02569B?logo=flutter)
-![Architecture](https://img.shields.io/badge/architecture-Bloc%20%2B%20Clean-4CAF50)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-Dart-02569B?logo=flutter" alt="Flutter" />
+  <img src="https://img.shields.io/badge/architecture-Bloc%20%2B%20Clean-4CAF50" alt="Architecture" />
+  <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="License" />
+</p>
 
 ---
+
+**Aurora** turns a PDF (or pasted text) into a study deck you can review with spaced repetition. Built with Flutter using a clean, layered architecture (Bloc + repository pattern).
 
 ## ✨ Features
 
