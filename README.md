@@ -16,27 +16,33 @@
 </p>
 
 <p align="center">
-  <a href="https://aurora-ptqjmpefk-mohammed-al-alimis-projects.vercel.app"><b>🌐 Try the live web demo →</b></a>
+  <a href="https://aurora-flashcards.vercel.app"><b>🌐 Try the live web demo →</b></a>
 </p>
 
 ---
 
-**Aurora** turns a PDF (or pasted text) into a study deck you can review with spaced repetition. Built with Flutter using a clean, layered architecture (Bloc + repository pattern). It runs on **iOS, Android, and the web**.
+**Aurora** turns your notes into a study deck you can review with spaced repetition — paste text (or import a PDF on mobile) and start learning. Built with Flutter and a clean, layered architecture (Bloc + repository), it runs natively on **iOS, Android, and the web**, adapting from a single phone column to a multi-column desktop layout.
 
 ## 📸 Screenshots
 
-| Your decks | Study (SM-2) | Reveal & rate | Light theme |
-|:---:|:---:|:---:|:---:|
-| <img src="assets/screenshots/decks.png" width="190" alt="Deck list" /> | <img src="assets/screenshots/review.png" width="190" alt="Review a card" /> | <img src="assets/screenshots/review-answer.png" width="190" alt="Reveal answer and rate" /> | <img src="assets/screenshots/light-theme.png" width="190" alt="Light theme" /> |
+<p align="center">
+  <img src="assets/screenshots/desktop.png" width="760" alt="Aurora on desktop — responsive deck grid with due counts and progress" />
+</p>
+
+| Your decks | Study (SM-2) | Paste to import |
+|:---:|:---:|:---:|
+| <img src="assets/screenshots/decks.png" width="220" alt="Deck list with due badges and progress bars" /> | <img src="assets/screenshots/review.png" width="220" alt="Review a card and rate recall" /> | <img src="assets/screenshots/import.png" width="220" alt="Paste text to create a whole deck" /> |
 
 ## ✨ Features
 
-- **AI flashcard generation** — create decks automatically from PDFs or pasted text
-- **Spaced repetition** — review with the proven **SM-2** algorithm
-- **Practice modes** — multiple-choice quizzes and manual (writing) recall
-- **Deck management** — create, edit, and organize flashcard collections
-- **Offline-first** — cards stored locally with the Isar database
-- **Light & dark themes** for comfortable studying
+- **Spaced repetition** — review due cards with the proven **SM-2** algorithm and rate recall (Again / Hard / Good / Easy)
+- **Two quiz modes** — multiple-choice and written-answer practice
+- **Bulk import** — paste text (one card per line) to build a deck in seconds; PDF → AI generation on mobile
+- **Deck insights** — per-deck **due counts** and a **mastery** progress bar
+- **Instant search** across your decks
+- **Responsive** — real multi-column layout on desktop/web, single-column on phones
+- **Light & dark themes**, remembered across sessions
+- **Offline-first & private** — data stored locally (Hive on mobile, IndexedDB on web); no account required
 
 ## 🧱 Tech & architecture
 
@@ -45,10 +51,10 @@
 | Architecture | Clean architecture (data / domain / presentation) |
 | State management | `flutter_bloc` (Bloc pattern) |
 | Dependency injection | `get_it` |
-| Local database | `isar` |
+| Local database | `hive_ce` (mobile + web / IndexedDB) |
 | Theming | `flex_color_scheme` |
 | Networking | `dio` |
-| PDF / OCR | `read_pdf_text`, `google_ml_vision` |
+| Bulk import | paste-text (all platforms) · `read_pdf_text` (mobile PDF) |
 | AI backend | [ChatPDF API](https://www.chatpdf.com/docs/api/backend) |
 
 ```
@@ -79,8 +85,10 @@ cd Aurora
 flutter pub get
 ```
 
-**3. Add your API keys.** Aurora uses the [ChatPDF API](https://www.chatpdf.com/docs/api/backend)
-to generate flashcards. Copy the example env file and fill in your keys:
+**3. (Optional) Add API keys.** Paste-import and everything else work without
+any keys. The **mobile** PDF → flashcards feature uses the
+[ChatPDF API](https://www.chatpdf.com/docs/api/backend); to enable it, copy the
+example env file and fill in your keys:
 
 ```bash
 cp .env.example .env
@@ -108,10 +116,11 @@ flutter run -d chrome    # in the browser
 
 ## 🗺️ Roadmap
 
-- ✅ Spaced repetition (SM-2)
-- ✅ Multiple-choice practice mode
-- ⏳ Improved AI flashcard generation
-- ⏳ UI/UX polish and animations
+- ✅ Spaced repetition (SM-2) + multiple-choice & written quizzes
+- ✅ Runs on the web with a responsive desktop layout
+- ✅ Paste-to-import, deck search, per-deck progress stats
+- ⏳ AI generation on the web (via a serverless proxy so keys stay server-side)
+- ⏳ Card-flip animations & keyboard shortcuts for web review
 
 ## 🤝 Contributing
 

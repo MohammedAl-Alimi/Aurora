@@ -8,6 +8,7 @@ export 'package:quizwiz/src/features/cards/presentation/screens/flashcards_list_
 export 'package:quizwiz/src/features/cards/presentation/screens/generated_flashcards_screen.dart';
 export 'package:quizwiz/src/features/cards/presentation/screens/multiple_choice_quiz_screen.dart';
 export 'package:quizwiz/src/features/cards/presentation/screens/practice_cards_screen.dart';
+export 'package:quizwiz/src/features/cards/presentation/screens/paste_import_screen.dart';
 export 'package:quizwiz/src/features/cards/presentation/screens/review_result_screen.dart';
 export 'package:quizwiz/src/features/cards/presentation/widgets/home_screen_widgets/create_collection_dialog.dart';
 export 'package:quizwiz/src/features/cards/presentation/widgets/generated_flashcards/generated_flashcard_widget.dart';

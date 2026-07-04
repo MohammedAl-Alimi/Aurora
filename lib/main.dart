@@ -20,10 +20,16 @@ Future<void> main() async {
 
 Future<void> _initialize() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (_) {
+    // No .env bundled (e.g. a fresh checkout) — the app still runs; only the
+    // optional AI-generation feature needs keys.
+  }
   // Hive works on mobile and web (IndexedDB), so the app runs everywhere.
   await Hive.initFlutter();
   await Hive.openBox<String>(collectionsBoxName);
+  await Hive.openBox<String>(appSettingsBoxName);
   await _seedWebDemoData();
   ServiceLocator().init();
 }

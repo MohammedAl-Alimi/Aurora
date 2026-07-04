@@ -57,6 +57,11 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => WritingQuizScreen(flashcards: flashcards),
         );
+      case Routes.pasteImport:
+        var uuid = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (context) => PasteImportScreen(collectionUuid: uuid),
+        );
       default:
         return MaterialPageRoute(
           builder: (context) => const CustomErrorWidget(),

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:quizwiz/src/core/core.dart';
@@ -12,15 +13,27 @@ class CollectionsListScreen extends StatelessWidget {
   final List<FlashcardCollection> collections;
   const CollectionsListScreen({super.key, required this.collections});
 
+  int _columnsFor(double width) {
+    if (width >= 900) return 3;
+    if (width >= 600) return 2;
+    return 1;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-      itemCount: collections.length,
-      itemBuilder: (listViewContext, index) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10 // 10,
-              ),
-          child: FocusedMenuHolder(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = _columnsFor(constraints.maxWidth);
+        return GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            mainAxisExtent: 214,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
+          ),
+          itemCount: collections.length,
+          itemBuilder: (listViewContext, index) => FocusedMenuHolder(
             onPressed: () {
               Navigator.of(context).pushNamed(Routes.flashcardsList,
                   arguments: collections[index].uuid);
@@ -55,9 +68,7 @@ class CollectionsListScreen extends StatelessWidget {
                       useRootNavigator: false,
                       builder: (_) {
                         return CombineCollectionDialog(
-                          //the selected collection
                           mainCollection: collections[index],
-                          //the available collections to combine with
                           availableCollection: collections
                               .where((element) => element != collections[index])
                               .toList(),
@@ -67,7 +78,9 @@ class CollectionsListScreen extends StatelessWidget {
             child: CollectionCardWidget(
               collection: collections[index],
             ),
-          )),
+          ),
+        );
+      },
     );
   }
 }

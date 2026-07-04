@@ -22,7 +22,7 @@ class CardsRepository implements BaseCardsRepository {
       final result = await _flashcardDataSource.addFlashcard(
           question, answer, collectionUuid);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -33,7 +33,7 @@ class CardsRepository implements BaseCardsRepository {
       final result = await _collectionDataSource.createCollection(name,
           description: description);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -43,7 +43,7 @@ class CardsRepository implements BaseCardsRepository {
     try {
       final result = await _collectionDataSource.getCollections();
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -55,7 +55,7 @@ class CardsRepository implements BaseCardsRepository {
     try {
       final result = await _flashcardDataSource.getDueReviewCards(collection);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -65,7 +65,7 @@ class CardsRepository implements BaseCardsRepository {
     try {
       final result = await _collectionDataSource.removeCollection(uuid);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -77,7 +77,7 @@ class CardsRepository implements BaseCardsRepository {
       final result = await _flashcardDataSource.updateDueTime(
           card, collectionUuid, reviewResult);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -89,7 +89,7 @@ class CardsRepository implements BaseCardsRepository {
       final result =
           await _flashcardDataSource.removeFlashcard(collection, flashcardUuid);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -99,7 +99,7 @@ class CardsRepository implements BaseCardsRepository {
     try {
       final result = await _flashcardDataSource.editFlashcard(parameters);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -114,7 +114,7 @@ class CardsRepository implements BaseCardsRepository {
     try {
       final result = await _collectionDataSource.editCollection(collection);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -126,7 +126,7 @@ class CardsRepository implements BaseCardsRepository {
       final result =
           await _flashcardDataSource.getMultipleChoiceOptions(collection);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -148,7 +148,7 @@ class CardsRepository implements BaseCardsRepository {
       final result = await _flashcardDataSource.saveAllGeneratedFlashcard(
           collectionUuid, flashcards);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
@@ -160,7 +160,7 @@ class CardsRepository implements BaseCardsRepository {
       final result = await _collectionDataSource.combineCollections(
           mainCollection, secondaryCollection);
       return Right(result);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }

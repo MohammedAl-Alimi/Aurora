@@ -11,6 +11,7 @@ export 'package:quizwiz/src/core/widgets/custom_snackbar.dart';
 export 'package:quizwiz/src/core/widgets/error_widget.dart';
 export 'package:quizwiz/src/core/widgets/loading_widget.dart';
 export 'package:quizwiz/src/core/widgets/no_result_screen.dart';
+export 'package:quizwiz/src/core/widgets/responsive_shell.dart';
 export 'package:quizwiz/src/core/errors/exceptions.dart';
 export 'package:quizwiz/src/core/services/internet_connection.dart';
 export 'package:quizwiz/src/core/utils/network_constants.dart';

@@ -1,12 +1,12 @@
 {
-    "name": "quizwiz",
-    "short_name": "quizwiz",
+    "name": "Aurora — AI Flashcards",
+    "short_name": "Aurora",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#0a0a0a",
+    "theme_color": "#0a0a0a",
+    "description": "A privacy-first AI flashcard app. Turn notes into study decks and review them with spaced repetition.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {

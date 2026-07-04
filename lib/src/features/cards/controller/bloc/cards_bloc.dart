@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:quizwiz/src/core/core.dart';
@@ -9,6 +11,7 @@ part 'cards_state.dart';
 class CardsBloc extends Bloc<CardsEvents, CardsState> {
   final BaseCardsRepository _baseCardsRepository;
   final Box<String> _box;
+  late final StreamSubscription<BoxEvent> _boxSub;
 
   CardsBloc(this._box, this._baseCardsRepository) : super(const CardsState()) {
     on<GetCollectionsEvent>(_getCollections);
@@ -24,13 +27,15 @@ class CardsBloc extends Bloc<CardsEvents, CardsState> {
     on<GenerateFlashcardsEvent>(_generateFlashcards);
     on<SaveAllGenerateFlashcardsEvent>(_saveAllGenerateFlashcards);
     on<CombineCollectionsEvent>(_combineCollections);
-    _box.watch().listen((event) {
+    _boxSub = _box.watch().listen((event) {
       add(const GetCollectionsEvent());
     });
   }
   @override
   Future<void> close() async {
-    await _box.close();
+    // Do NOT close the shared Hive box here — it's a singleton used by the
+    // data sources; closing it would brick all subsequent storage access.
+    await _boxSub.cancel();
     return super.close();
   }
 

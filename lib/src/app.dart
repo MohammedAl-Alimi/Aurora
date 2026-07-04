@@ -25,7 +25,10 @@ class QuizWizApp extends StatelessWidget {
       child: Builder(builder: (context) {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
+            title: 'Aurora — AI Flashcards',
             themeMode: context.watch<ThemeCubit>().state,
+            scrollBehavior: AppScrollBehavior(),
+            builder: (context, child) => ResponsiveShell(child: child!),
             onGenerateRoute: (settings) =>
                 RouteGenerator.generateRoute(settings),
             theme: AppTheme.lightTheme(),

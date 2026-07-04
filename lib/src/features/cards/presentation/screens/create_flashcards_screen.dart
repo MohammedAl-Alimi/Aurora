@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:quizwiz/src/core/core.dart';
 import 'package:quizwiz/src/features/cards/controller/controller.dart';
 import 'package:quizwiz/src/features/cards/presentation/presentation.dart';
@@ -71,15 +72,24 @@ class _CreateFlashcardsScreenState extends State<CreateFlashcardsScreen> {
                         formKey: key,
                         questionController: questionController,
                         answerController: answerController),
+                    // PDF/AI generation relies on native plugins that don't
+                    // run on web — offer it only where it works.
+                    if (!kIsWeb)
+                      TextButton.icon(
+                          key: const Key(AppStrings.generateWithAI),
+                          onPressed: () async {
+                            final file = await _pickFile();
+                            generateFlashcards(file);
+                          },
+                          icon: const Icon(Icons.rocket),
+                          label: const Text(AppStrings.generateWithAI)),
                     TextButton.icon(
-                        key: const Key(AppStrings.generateWithAI),
-                        onPressed: () async {
-                          final file = await _pickFile();
-                          generateFlashcards(file);
-                        },
-                        icon: const Icon(Icons.rocket),
-                        label: const Text(AppStrings.generateWithAI)),
-                    SizedBox(height: size.maxHeight * 0.2),
+                        onPressed: () => Navigator.of(context).pushNamed(
+                            Routes.pasteImport,
+                            arguments: widget.collectionUuid),
+                        icon: const Icon(Icons.content_paste),
+                        label: const Text('Paste text to add many')),
+                    SizedBox(height: size.maxHeight * 0.15),
                     FilledButton(
                         key: const Key(AppStrings.addCard),
                         onPressed: () {
