@@ -23,6 +23,8 @@ abstract class CollectionLocalDataSource {
       }) collection);
   Future<Unit> combineCollections(FlashcardCollection mainCollection,
       FlashcardCollection secondaryCollection);
+  Future<Unit> updateCollection(FlashcardCollection collection);
+  Future<Unit> importCollections(List<FlashcardCollection> collections);
 }
 
 class HiveCollectionDataSource implements CollectionLocalDataSource {
@@ -93,6 +95,28 @@ class HiveCollectionDataSource implements CollectionLocalDataSource {
         ...secondaryCollection.cards
       ];
       await _save(mainCollection.copyWith(cards: newCardList));
+    } catch (error) {
+      throw LocalStorageException(message: error.toString());
+    }
+    return unit;
+  }
+
+  @override
+  Future<Unit> updateCollection(FlashcardCollection collection) async {
+    try {
+      await _save(collection);
+    } catch (error) {
+      throw LocalStorageException(message: error.toString());
+    }
+    return unit;
+  }
+
+  @override
+  Future<Unit> importCollections(List<FlashcardCollection> collections) async {
+    try {
+      for (final c in collections) {
+        await _save(c);
+      }
     } catch (error) {
       throw LocalStorageException(message: error.toString());
     }

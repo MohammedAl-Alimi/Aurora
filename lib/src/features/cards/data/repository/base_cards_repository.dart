@@ -38,4 +38,6 @@ abstract class BaseCardsRepository {
       String collectionUuid, List<Flashcard> flashcards);
   EitherUnit combineCollections(FlashcardCollection mainCollection,
       FlashcardCollection secondaryCollection);
+  EitherUnit updateCollection(FlashcardCollection collection);
+  EitherUnit importCollections(List<FlashcardCollection> collections);
 }

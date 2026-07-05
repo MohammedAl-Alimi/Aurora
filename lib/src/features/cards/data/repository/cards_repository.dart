@@ -164,4 +164,24 @@ class CardsRepository implements BaseCardsRepository {
       return Left(LocalStorageFailure(message: e.toString()));
     }
   }
+
+  @override
+  EitherUnit updateCollection(FlashcardCollection collection) async {
+    try {
+      final result = await _collectionDataSource.updateCollection(collection);
+      return Right(result);
+    } catch (e) {
+      return Left(LocalStorageFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  EitherUnit importCollections(List<FlashcardCollection> collections) async {
+    try {
+      final result = await _collectionDataSource.importCollections(collections);
+      return Right(result);
+    } catch (e) {
+      return Left(LocalStorageFailure(message: e.toString()));
+    }
+  }
 }

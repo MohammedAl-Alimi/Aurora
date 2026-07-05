@@ -27,6 +27,8 @@ class CardsBloc extends Bloc<CardsEvents, CardsState> {
     on<GenerateFlashcardsEvent>(_generateFlashcards);
     on<SaveAllGenerateFlashcardsEvent>(_saveAllGenerateFlashcards);
     on<CombineCollectionsEvent>(_combineCollections);
+    on<UpdateCollectionEvent>(_updateCollection);
+    on<ImportCollectionsEvent>(_importCollections);
     _boxSub = _box.watch().listen((event) {
       add(const GetCollectionsEvent());
     });
@@ -212,6 +214,34 @@ class CardsBloc extends Bloc<CardsEvents, CardsState> {
     emit(state.copyWith(collectionsRequestState: RequestState.loading));
     final result = await _baseCardsRepository.combineCollections(
         event.mainCollection, event.secondaryCollection);
+    result.fold(
+        (l) => emit(state.copyWith(
+            collectionsErrorMessage: l.message,
+            collectionsRequestState: RequestState.error)),
+        (r) => emit(state.copyWith(
+              collectionsRequestState: RequestState.success,
+            )));
+  }
+
+  _updateCollection(
+      UpdateCollectionEvent event, Emitter<CardsState> emit) async {
+    emit(state.copyWith(collectionsRequestState: RequestState.loading));
+    final result =
+        await _baseCardsRepository.updateCollection(event.collection);
+    result.fold(
+        (l) => emit(state.copyWith(
+            collectionsErrorMessage: l.message,
+            collectionsRequestState: RequestState.error)),
+        (r) => emit(state.copyWith(
+              collectionsRequestState: RequestState.success,
+            )));
+  }
+
+  _importCollections(
+      ImportCollectionsEvent event, Emitter<CardsState> emit) async {
+    emit(state.copyWith(collectionsRequestState: RequestState.loading));
+    final result =
+        await _baseCardsRepository.importCollections(event.collections);
     result.fold(
         (l) => emit(state.copyWith(
             collectionsErrorMessage: l.message,

@@ -112,3 +112,17 @@ class CombineCollectionsEvent extends CardsEvents {
     required this.secondaryCollection,
   });
 }
+
+class UpdateCollectionEvent extends CardsEvents {
+  final FlashcardCollection collection;
+  const UpdateCollectionEvent({required this.collection});
+  @override
+  List<Object?> get props => [collection];
+}
+
+class ImportCollectionsEvent extends CardsEvents {
+  final List<FlashcardCollection> collections;
+  const ImportCollectionsEvent({required this.collections});
+  @override
+  List<Object?> get props => [collections];
+}
