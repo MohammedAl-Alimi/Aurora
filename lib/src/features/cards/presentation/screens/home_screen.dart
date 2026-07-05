@@ -2,6 +2,7 @@ import 'package:quizwiz/src/core/core.dart';
 import 'package:quizwiz/src/features/cards/controller/controller.dart';
 import 'package:quizwiz/src/features/cards/data/data.dart';
 import 'package:quizwiz/src/features/cards/presentation/presentation.dart';
+import 'package:quizwiz/src/features/stats/presentation/widgets/streak_chip.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,6 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: const Text('Aurora'),
           actions: [
+            const StreakChip(),
+            IconButton(
+              tooltip: 'Statistics',
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(Routes.statistics),
+              icon: const Icon(Icons.bar_chart),
+            ),
             IconButton(
               tooltip: isDark ? 'Light mode' : 'Dark mode',
               onPressed: () => context.read<ThemeCubit>().toggleTheme(),

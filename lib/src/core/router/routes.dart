@@ -9,4 +9,5 @@ class Routes {
   static const generatedFlashcards = '/generated_flashcards';
   static const writingQuiz = '/writing_quiz';
   static const pasteImport = '/paste_import';
+  static const statistics = '/statistics';
 }

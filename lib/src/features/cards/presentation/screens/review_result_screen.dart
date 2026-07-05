@@ -3,6 +3,7 @@ import 'package:quizwiz/src/core/core.dart';
 import 'package:quizwiz/src/features/cards/controller/controller.dart';
 import 'package:quizwiz/src/features/cards/data/data.dart';
 import 'package:quizwiz/src/features/cards/presentation/presentation.dart';
+import 'package:quizwiz/src/features/stats/controller/streak_cubit.dart';
 
 class ReviewResultScreen extends StatelessWidget {
   final (Flashcard card, FlashcardCollection collection) cardAndCollection;
@@ -73,6 +74,7 @@ class ReviewResultScreen extends StatelessWidget {
   }
 
   void _addReview(BuildContext buildContext, ReviewResult result) {
+    buildContext.read<StreakCubit>().recordReview();
     buildContext.read<CardsBloc>()
       ..add(UpdateDueTimeEvent(
           card: cardAndCollection.$1,

@@ -3,6 +3,7 @@ import 'package:quizwiz/src/core/widgets/error_widget.dart';
 import 'package:quizwiz/src/features/cards/data/data.dart';
 import 'package:quizwiz/src/features/cards/presentation/presentation.dart';
 import 'package:quizwiz/src/features/cards/presentation/screens/writing_quiz_screen.dart';
+import 'package:quizwiz/src/features/stats/presentation/statistics_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -61,6 +62,10 @@ class RouteGenerator {
         var uuid = settings.arguments as String;
         return MaterialPageRoute(
           builder: (context) => PasteImportScreen(collectionUuid: uuid),
+        );
+      case Routes.statistics:
+        return MaterialPageRoute(
+          builder: (context) => const StatisticsScreen(),
         );
       default:
         return MaterialPageRoute(

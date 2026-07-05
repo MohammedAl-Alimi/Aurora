@@ -3,6 +3,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:quizwiz/src/core/core.dart';
 import 'package:quizwiz/src/features/cards/controller/controller.dart';
 import 'package:quizwiz/src/features/cards/data/data.dart';
+import 'package:quizwiz/src/features/stats/controller/streak_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -19,5 +20,6 @@ class ServiceLocator {
     //bloc
     sl.registerFactory<CardsBloc>(() => CardsBloc(sl(), sl()));
     sl.registerFactory(() => ThemeCubit());
+    sl.registerLazySingleton(() => StreakCubit());
   }
 }

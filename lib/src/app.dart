@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:quizwiz/src/core/core.dart';
 import 'package:quizwiz/src/features/cards/presentation/presentation.dart';
+import 'package:quizwiz/src/features/stats/controller/streak_cubit.dart';
 
 import 'features/cards/controller/controller.dart';
 
@@ -20,7 +21,8 @@ class QuizWizApp extends StatelessWidget {
         BlocProvider(
           create: (_) => cardsBloc,
         ),
-        BlocProvider(create: (_) => themeCubit)
+        BlocProvider(create: (_) => themeCubit),
+        BlocProvider(create: (_) => sl<StreakCubit>()),
       ],
       child: Builder(builder: (context) {
         return MaterialApp(
