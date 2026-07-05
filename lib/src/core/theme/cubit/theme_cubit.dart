@@ -18,6 +18,8 @@ class ThemeCubit extends Cubit<ThemeMode> {
           return ThemeMode.light;
         case 'dark':
           return ThemeMode.dark;
+        case 'system':
+          return ThemeMode.system;
       }
     } catch (_) {/* box not open yet — fall through to default */}
     return ThemeMode.dark;
@@ -29,10 +31,19 @@ class ThemeCubit extends Cubit<ThemeMode> {
     emit(next);
   }
 
+  void setThemeMode(ThemeMode mode) {
+    _persist(mode);
+    emit(mode);
+  }
+
   void _persist(ThemeMode mode) {
     try {
-      Hive.box<String>(appSettingsBoxName)
-          .put(_themeKey, mode == ThemeMode.light ? 'light' : 'dark');
+      final value = switch (mode) {
+        ThemeMode.light => 'light',
+        ThemeMode.dark => 'dark',
+        ThemeMode.system => 'system',
+      };
+      Hive.box<String>(appSettingsBoxName).put(_themeKey, value);
     } catch (_) {/* best-effort */}
   }
 }

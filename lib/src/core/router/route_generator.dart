@@ -4,6 +4,7 @@ import 'package:quizwiz/src/features/cards/data/data.dart';
 import 'package:quizwiz/src/features/cards/presentation/presentation.dart';
 import 'package:quizwiz/src/features/cards/presentation/screens/writing_quiz_screen.dart';
 import 'package:quizwiz/src/features/stats/presentation/statistics_screen.dart';
+import 'package:quizwiz/src/features/settings/presentation/settings_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -66,6 +67,10 @@ class RouteGenerator {
       case Routes.statistics:
         return MaterialPageRoute(
           builder: (context) => const StatisticsScreen(),
+        );
+      case Routes.settings:
+        return MaterialPageRoute(
+          builder: (context) => const SettingsScreen(),
         );
       default:
         return MaterialPageRoute(

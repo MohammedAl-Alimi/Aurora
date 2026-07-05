@@ -46,6 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.bar_chart),
             ),
             IconButton(
+              tooltip: 'Settings',
+              onPressed: () => Navigator.of(context).pushNamed(Routes.settings),
+              icon: const Icon(Icons.settings_outlined),
+            ),
+            IconButton(
               tooltip: isDark ? 'Light mode' : 'Dark mode',
               onPressed: () => context.read<ThemeCubit>().toggleTheme(),
               icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),

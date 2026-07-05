@@ -10,4 +10,5 @@ class Routes {
   static const writingQuiz = '/writing_quiz';
   static const pasteImport = '/paste_import';
   static const statistics = '/statistics';
+  static const settings = '/settings';
 }
