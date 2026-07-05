@@ -28,6 +28,9 @@
 <p align="center">
   <img src="assets/screenshots/desktop.png" width="760" alt="Aurora on desktop — responsive deck grid with due counts and progress" />
 </p>
+<p align="center">
+  <img src="assets/screenshots/stats.png" width="760" alt="Progress dashboard — streak, daily goal, activity, and per-deck mastery" />
+</p>
 
 | Your decks | Study (SM-2) | Paste to import |
 |:---:|:---:|:---:|
@@ -35,13 +38,16 @@
 
 ## ✨ Features
 
-- **Spaced repetition** — review due cards with the proven **SM-2** algorithm and rate recall (Again / Hard / Good / Easy)
+- **Spaced repetition** — study due cards with the proven **SM-2** algorithm; rate recall (Again / Hard / Good / Easy)
+- **Streaks & daily goals** — a 🔥 streak and goal ring on the home bar keep the habit going
+- **Progress dashboard** — totals, per-deck mastery, and a 14-day activity chart
 - **Two quiz modes** — multiple-choice and written-answer practice
-- **Bulk import** — paste text (one card per line) to build a deck in seconds; PDF → AI generation on mobile
-- **Deck insights** — per-deck **due counts** and a **mastery** progress bar
-- **Instant search** across your decks
+- **Bulk import** — paste text (one card per line) to build a deck in seconds; PDF → AI on mobile
+- **Backup & restore** — export / import all your decks as JSON
+- **Sample decks** — add ready-made starter decks with one tap
+- **Deck insights & search** — per-deck due counts, mastery bars, and instant search
+- **Settings** — system / light / dark theme, adjustable daily goal, reset progress
 - **Responsive** — real multi-column layout on desktop/web, single-column on phones
-- **Light & dark themes**, remembered across sessions
 - **Offline-first & private** — data stored locally (Hive on mobile, IndexedDB on web); no account required
 
 ## 🧱 Tech & architecture
